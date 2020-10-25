@@ -43,7 +43,7 @@ function love.load()
     ballDX = math.random(2) == 1 and 100 or -100
     ballDY = math.random(-50, 50)
 
-    gameScreen = 'start'
+    gamePhase = 'pause'
 end
 
 function love.update(dt)
@@ -59,6 +59,12 @@ function love.update(dt)
         p2Y = math.max(0, p2Y + (-PADDLE_SPEED * dt))
     elseif love.keyboard.isDown('down') then
         p2Y = math.min(VIRTUAL_HEIGHT - PADDLE_HEIGHT, p2Y + (PADDLE_SPEED * dt))
+    end
+
+    -- Ball movement
+    if gamePhase == 'play' then
+        ballX = ballX + ballDX * dt
+        ballY = ballY + ballDY * dt
     end
 end
  
@@ -81,7 +87,7 @@ function love.draw()
     -- Draw paddles and ball
     love.graphics.rectangle('fill', 10, p1Y, PADDLE_WIDTH, PADDLE_HEIGHT)
     love.graphics.rectangle('fill', VIRTUAL_WIDTH - (10 + PADDLE_WIDTH), p2Y, PADDLE_WIDTH, PADDLE_HEIGHT)
-    love.graphics.rectangle('fill', VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
+    love.graphics.rectangle('fill', ballX, ballY, 4, 4)
 
     push:apply('end')
 end
@@ -89,5 +95,13 @@ end
 function love.keypressed(key)
     if key == 'escape' then
         love.event.quit()
+    end
+
+    if key == 'space' then
+        if gamePhase == 'pause' then
+            gamePhase = 'play'
+        else 
+            gamePhase = 'pause'
+        end
     end
 end
