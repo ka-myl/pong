@@ -43,7 +43,7 @@ function love.load()
     ballDX = math.random(2) == 1 and 100 or -100
     ballDY = math.random(-50, 50)
 
-    gamePhase = 'pause'
+    gamePhase = 'start'
 end
 
 function love.update(dt)
@@ -95,13 +95,17 @@ end
 function love.keypressed(key)
     if key == 'escape' then
         love.event.quit()
-    end
-
-    if key == 'space' then
-        if gamePhase == 'pause' then
+    elseif key == 'space' then
+        if gamePhase == 'start' then
             gamePhase = 'play'
-        else 
-            gamePhase = 'pause'
+        else
+            gamePhase = 'start'
+
+            -- reset ball state
+            ballX = VIRTUAL_WIDTH / 2 - 2
+            ballY = VIRTUAL_HEIGHT / 2 - 2
+            ballDX = math.random(2) == 1 and 100 or -100
+            ballDY = math.random(-50, 50)
         end
     end
 end
