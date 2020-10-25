@@ -17,6 +17,7 @@ P2_SCORE_X = VIRTUAL_WIDTH / 2 + 70
 
 function love.load()
     -- General setup
+    math.randomseed(os.time())
 
     -- fonts
     smallFont = love.graphics.newFont('font.ttf', 8)
@@ -36,21 +37,28 @@ function love.load()
 
     p1Y = PADDLE_STARTING_HEIGHT
     p2Y = PADDLE_STARTING_HEIGHT
+
+    ballX = VIRTUAL_WIDTH / 2 - 2
+    ballY = VIRTUAL_HEIGHT / 2 - 2
+    ballDX = math.random(2) == 1 and 100 or -100
+    ballDY = math.random(-50, 50)
+
+    gameScreen = 'start'
 end
 
 function love.update(dt)
     -- Player 1 controls
     if love.keyboard.isDown('w') then
-        p1Y = p1Y + (-PADDLE_SPEED * dt)
+        p1Y = math.max(0, p1Y + (-PADDLE_SPEED * dt))
     elseif love.keyboard.isDown('s') then
-        p1Y = p1Y + (PADDLE_SPEED * dt)
+        p1Y = math.min(VIRTUAL_HEIGHT - PADDLE_HEIGHT, p1Y + (PADDLE_SPEED * dt))
     end
 
      -- Player 2 controls
      if love.keyboard.isDown('up') then
-        p2Y = p2Y + (-PADDLE_SPEED * dt)
+        p2Y = math.max(0, p2Y + (-PADDLE_SPEED * dt))
     elseif love.keyboard.isDown('down') then
-        p2Y = p2Y + (PADDLE_SPEED * dt)
+        p2Y = math.min(VIRTUAL_HEIGHT - PADDLE_HEIGHT, p2Y + (PADDLE_SPEED * dt))
     end
 end
  
@@ -72,7 +80,7 @@ function love.draw()
 
     -- Draw paddles and ball
     love.graphics.rectangle('fill', 10, p1Y, PADDLE_WIDTH, PADDLE_HEIGHT)
-    love.graphics.rectangle('fill', VIRTUAL_WIDTH - 10, p2Y, PADDLE_WIDTH, PADDLE_HEIGHT)
+    love.graphics.rectangle('fill', VIRTUAL_WIDTH - (10 + PADDLE_WIDTH), p2Y, PADDLE_WIDTH, PADDLE_HEIGHT)
     love.graphics.rectangle('fill', VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
 
     push:apply('end')
