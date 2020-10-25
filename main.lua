@@ -10,7 +10,6 @@ WINDOW_HEIGHT = 720
 VIRTUAL_WIDTH = 432
 VIRTUAL_HEIGHT = 243
 
-PADDLE_SPEED = 200
 PADDLE_STARTING_HEIGHT = (VIRTUAL_HEIGHT / 2) - (PADDLE_HEIGHT / 2)
 
 SCORE_Y = 30
@@ -48,20 +47,20 @@ end
 function love.update(dt)
     -- Player 1 controls
     if love.keyboard.isDown('w') then
-        player1.dy = -PADDLE_SPEED
+        player1:move('up')
     elseif love.keyboard.isDown('s') then
-        player1.dy = PADDLE_SPEED
+        player1:move('down')
     else
-        player1.dy = 0
+        player1:stop()
     end
 
      -- Player 2 controls
      if love.keyboard.isDown('up') then
-        player2.dy = -PADDLE_SPEED
+        player2:move('up')
     elseif love.keyboard.isDown('down') then
-        player2.dy = PADDLE_SPEED
+        player2:move('down')
     else
-        player2.dy = 0
+        player2:stop()
     end
 
     if gamePhase == 'play' then
