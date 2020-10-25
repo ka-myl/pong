@@ -6,8 +6,15 @@ WINDOW_HEIGHT = 720
 VIRTUAL_WIDTH = 432
 VIRTUAL_HEIGHT = 243
 
+PADDLE_WIDTH = 5
+PADDLE_HEIGHT = 20
+
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
+
+    smallFont = love.graphics.newFont('font.ttf', 8)
+
+    love.graphics.setFont(smallFont)
 
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         fullscreen = false,
@@ -20,7 +27,16 @@ end
 function love.draw()
     push:apply('start')
 
-    love.graphics.printf('Hello Pong!', 0, VIRTUAL_HEIGHT / 2 - 6, VIRTUAL_WIDTH, 'center')
+    -- Draw background
+    love.graphics.clear(40, 45, 52, 0)
+
+    -- Draw title
+    love.graphics.printf('Pong', 0, 20, VIRTUAL_WIDTH, 'center')
+
+    -- Draw paddles and ball
+    love.graphics.rectangle('fill', 10, 30, PADDLE_WIDTH, PADDLE_HEIGHT)
+    love.graphics.rectangle('fill', VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 50, PADDLE_WIDTH, PADDLE_HEIGHT)
+    love.graphics.rectangle('fill', VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
 
     push:apply('end')
 end
