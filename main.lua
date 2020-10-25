@@ -11,17 +11,19 @@ PADDLE_HEIGHT = 20
 PADDLE_SPEED = 200
 PADDLE_STARTING_HEIGHT = (VIRTUAL_HEIGHT / 2) - (PADDLE_HEIGHT / 2)
 
-SCORE_Y = 50
-P1_SCORE_X = VIRTUAL_WIDTH / 2 - 50
-P2_SCORE_X = VIRTUAL_WIDTH / 2 + 30
+SCORE_Y = 30
+P1_SCORE_X = VIRTUAL_WIDTH / 2 - 100
+P2_SCORE_X = VIRTUAL_WIDTH / 2 + 70
 
 function love.load()
-    love.graphics.setDefaultFilter('nearest', 'nearest')
+    -- General setup
 
     -- fonts
     smallFont = love.graphics.newFont('font.ttf', 8)
     scoreFont = love.graphics.newFont('font.ttf', 32)
 
+    -- Screen setup
+    love.graphics.setDefaultFilter('nearest', 'nearest')
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         fullscreen = false,
         resizable = false,
