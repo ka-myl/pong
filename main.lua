@@ -37,7 +37,7 @@ function love.load()
     player1 = Paddle(10, PADDLE_STARTING_HEIGHT)
     player2 = Paddle(VIRTUAL_WIDTH - 15, PADDLE_STARTING_HEIGHT)
 
-    player1Score = 1
+    player1Score = 0
     player2Score = 0
 
     ball = Ball(VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
@@ -51,6 +51,7 @@ function love.update(dt)
         if ball:collides(player1) then
             -- Reverse and slightly increase ball horizontal direction
             ball.dx = -ball.dx * 1.03
+            ball.x = player1.x + PADDLE_WIDTH
 
             -- keep vertical direction, but randomize it
             if ball.dy < 0 then
@@ -63,6 +64,7 @@ function love.update(dt)
         if ball:collides(player2) then
             -- Reverse and slightly increase ball horizontal direction
             ball.dx = -ball.dx * 1.03
+            ball.x = player2.x - BALL_SIZE
 
             -- keep vertical direction, but randomize it
             if ball.dy < 0 then
@@ -82,6 +84,20 @@ function love.update(dt)
         if ball.y >= VIRTUAL_HEIGHT - BALL_SIZE then
             ball.y = VIRTUAL_HEIGHT - BALL_SIZE
             ball.dy = -ball.dy
+        end
+
+        -- reset game if player 1 gets a point
+        if ball.x + BALL_SIZE >= VIRTUAL_WIDTH then
+            gamePhase = 'start'
+            ball:reset()
+            player1Score = player1Score + 1
+        end
+
+        -- reset game if player 2 gets a point
+        if ball.x <= 0 then
+            gamePhase = 'start'
+            ball:reset()
+            player2Score = player2Score + 1
         end
     end
 
