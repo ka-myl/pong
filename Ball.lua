@@ -19,6 +19,20 @@ function Ball:reset()
     self.dy = math.random(-50, 50)
 end
 
+function Ball:collides(paddle)
+    -- check left / right
+    if self.x > paddle.x + PADDLE_WIDTH or paddle.x > self.x + BALL_SIZE then
+        return false
+    end
+
+    -- check top / bottom
+    if self.y > paddle.y + PADDLE_HEIGHT or paddle.y > self.y + BALL_SIZE then
+        return false
+    end 
+
+    return true
+end
+
 function Ball:update(dt)
     self.x = self.x + self.dx * dt
     self.y = self.y + self.dy * dt

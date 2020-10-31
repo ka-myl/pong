@@ -25,6 +25,7 @@ function love.load()
     scoreFont = love.graphics.newFont('font.ttf', 32)
 
     -- Screen setup
+    love.window.setTitle('Pong')
     love.graphics.setDefaultFilter('nearest', 'nearest')
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         fullscreen = false,
@@ -45,6 +46,45 @@ function love.load()
 end
 
 function love.update(dt)
+    -- Ball movement
+    if gamePhase == 'play' then
+        if ball:collides(player1) then
+            -- Reverse and slightly increase ball horizontal direction
+            ball.dx = -ball.dx * 1.03
+
+            -- keep vertical direction, but randomize it
+            if ball.dy < 0 then
+                ball.dy = -math.random(10, 150)
+            else
+                ball.dy = math.random(10, 150)
+            end
+        end
+
+        if ball:collides(player2) then
+            -- Reverse and slightly increase ball horizontal direction
+            ball.dx = -ball.dx * 1.03
+
+            -- keep vertical direction, but randomize it
+            if ball.dy < 0 then
+                ball.dy = -math.random(10, 150)
+            else
+                ball.dy = math.random(10, 150)
+            end
+        end
+
+        -- reverse vertical direction on top screen edge collision
+        if ball.y <= 0 then
+            ball.y = 0
+            ball.dy = -ball.dy
+        end
+
+        -- reverse vertical direction on bottom screen edge collision
+        if ball.y >= VIRTUAL_HEIGHT - BALL_SIZE then
+            ball.y = VIRTUAL_HEIGHT - BALL_SIZE
+            ball.dy = -ball.dy
+        end
+    end
+
     -- Player 1 controls
     if love.keyboard.isDown('w') then
         player1:move('up')
